@@ -4,7 +4,6 @@
  * FLOWCHART: https://lucid.app/lucidchart/5a3164fd-459f-494d-9cae-b4a6be593b13/view
  */
 
-
 /* main controls the program. 
  * Store the number of questions to ask in a variable called questions.
  * Call askQuestions, sending questions as an argument, which returns the number right. 
@@ -13,8 +12,11 @@
  * @param none
  * @return none
  */
-function main() {
-
+function main(){
+let questions = 5;
+let right = askQuestions(questions);
+if (right == questions) alert("Perfect!");
+else alert("You got " + right + " out of " + questions + ".");
 }
 
 
@@ -24,15 +26,33 @@ function main() {
  * @return: {integer} right (0-questions)
  */
 function askQuestions(questions) {
-
+let right = 0;
+let question = 1;
+while (question >= questions){ 
+    right += askQuestion(question);
 }
+}
+
+
 
 
 /* askQuestion asks a multiplication question, using the question parameter to say which
  * question is being asked.  It returns 1 if correct, 0 if incorrect.
  * @param: {integer} question (1 - questions)
  * @return: {integer} correct (0 or 1) or {boolean} correct
- */
+*/
 function askQuestion(question){
-  
+let a = Math.floor(Math.random()*7+3);
+let b = Math.floor(Math.random()*7+3);
+let product = a*b;
+let equation = "Question:" + question + a + " * " + b + " = ?";
+let answer = prompt(equation);
+if (answer == product){ 
+    alert("Correct!")
+    let answer = true;
+}
+else{
+    alert("Sorry, but that's incorrect.")
+    let answer = false;
+}
 }
