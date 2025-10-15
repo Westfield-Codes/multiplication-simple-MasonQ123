@@ -13,10 +13,10 @@
  * @return none
  */
 function main(){
-let questions = 5;
-let right = askQuestions(questions);
-if (right == questions) alert("Perfect!");
-else alert("You got " + right + " out of " + questions + ".");
+    let questions = 5;
+    let right = askQuestions(questions);
+    if (right == questions) alert("Perfect!");
+    else alert("You got " + right + " out of " + questions + ".");
 }
 
 
@@ -26,11 +26,13 @@ else alert("You got " + right + " out of " + questions + ".");
  * @return: {integer} right (0-questions)
  */
 function askQuestions(questions) {
-let right = 0;
-let question = 1;
-while (question >= questions){ 
-    right += askQuestion(question);
-}
+    let right = 0;
+    let question = 1;
+     while (question <= questions) {
+        right += askQuestion(question);
+        question++;
+    }
+    return right;
 }
 
 
@@ -42,17 +44,17 @@ while (question >= questions){
  * @return: {integer} correct (0 or 1) or {boolean} correct
 */
 function askQuestion(question){
-let a = Math.floor(Math.random()*7+3);
-let b = Math.floor(Math.random()*7+3);
-let product = a*b;
-let equation = "Question:" + question + a + " * " + b + " = ?";
-let answer = prompt(equation);
-if (answer == product){ 
-    alert("Correct!")
-    let answer = true;
-}
-else{
-    alert("Sorry, but that's incorrect.")
-    let answer = false;
-}
+    let a = Math.floor(Math.random()*7+3);
+    let b = Math.floor(Math.random()*7+3);
+    let product = a * b;
+    let equation = "Question " + question + ": " + a + " * " + b + " = ?";
+    let answer = prompt(equation);
+    if (answer == product){ 
+        alert("Correct!")
+        return true;
+    }
+    else{
+        alert("Sorry, but that's incorrect.")
+        return false;
+    }
 }
