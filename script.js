@@ -23,12 +23,15 @@ var high = 9;
 function main(){
 
 let wizard = confirm("Would you like to use the setup wizard?")
-if (wizard == true) setUp();
-else{
+    if (wizard) setUp();
     let right = askQuestions(questions);
-        if (right == questions) alert("Perfect!");  
-        else alert("You got " + right + " out of " + questions + ".");
-}
+        if (right == questions) alert("Perfect!");
+
+        else {
+            alert("You got " + right + " out of " + questions + ".")
+            let tables = confirm("would you like to study with a table?");
+            if(tables) showTables();
+}       
 }
 
 /* setUp lets the student customize the multiplication game
@@ -38,20 +41,22 @@ else{
 * @return none
 */
 function setUp() {
-let first = prompt("What's the maximum factor you'd like to use?");
-let second = prompt("What's the mimimum factor you'd like to use")
-high = parseInt(first);
-low = parseInt(second);
+let first = prompt("What's the mimimum factor you'd like to use");
+let second = prompt("What's the maximum factor you'd like to use?");
+if (first > second){
+    alert("You've input an invalid range, try again.");
+    setUp();
+}
 
-strQ = prompt("How many questions do you want to answer?")
+let strQ = prompt("How many questions do you want to answer?");
 questions = parseInt(strQ);
 
-while (Number.isNaN(questions) && questions < 0){
-    questions = prompt("Please try again with a positive number.")
-}
-}
+do {
+  questions = prompt("Please enter a positive number:");
+} while (Number.isNaN(Number(questions)) || Number(questions) < 0);
 
-
+alert("For testing purposes questions is " + questions + "!");
+}
 /* askQuestions calls askQuestion() questions times (for loop), sending the question number as an argument. 
  * It counts the number right returned, and returns number right to main() for feedback.
  * @param: {integer} questions 
@@ -59,8 +64,10 @@ while (Number.isNaN(questions) && questions < 0){
  */
 function askQuestions(questions) {
     let right = 0;
-        for (question; question <= questions; question++) right += askQuestion(question);
-        return right;
+    for (let question = 1; question <= questions; question++){
+        right += askQuestion(question);
+    }
+    return right;
 }
 
 
@@ -87,6 +94,23 @@ function askQuestion(question){
         }
 }
 
+/* Function showTable()
+ * Display a multiplication table for a factor
+ * Builds table line by line with a loop, then shows table * One line for each factor value. low to high 
+ * @param: none
+ * @return: none
+ */
+
+function showTables() {
+    let factor = prompt("Which factor would you like to see a table for?");
+    let table = "Times table for " + factor + "\n";
+        for(let i = low; i <= high; i++){
+            table += i + " * " + factor + " = " + factor*i + "\n";
+        }
+        alert(table);
+    let another = confirm("another table?");
+    if(another) showTables();
+}
 
 /* to-do later
 * specify how many questions the student wants and what those should be, this should be done through assigning an existing GLOBAL variable
