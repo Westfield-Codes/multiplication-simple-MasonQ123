@@ -8,7 +8,7 @@
 var questions = 5;
 var low = 3;
 var high = 9;
-
+var errors = [];
 
 /* main controls the program. 
  * Store the number of questions to ask in a variable called questions.
@@ -41,21 +41,26 @@ let wizard = confirm("Would you like to use the setup wizard?")
 * @return none
 */
 function setUp() {
-let first = prompt("What's the mimimum factor you'd like to use");
-let second = prompt("What's the maximum factor you'd like to use?");
-if (first > second){
-    alert("You've input an invalid range, try again.");
-    setUp();
-}
+   let first = parseInt(prompt("What's the minimum factor you'd like to use"));
+    let second = parseInt(prompt("What's the maximum factor you'd like to use?"));
+
+    // Check for valid number input AND correct range
+    if (isNaN(first) || isNaN(second) || first < 0 || second < 0 || first > second) {
+        alert("You've input an invalid range. Please try again.");
+        // Use recursion to re-prompt for the settings
+        setUp(); 
+    } else {
+        // Only update globals when input is valid
+        low = first;
+        high = second;
+    }
 
 let strQ = prompt("How many questions do you want to answer?");
 questions = parseInt(strQ);
 
-do {
+ while (Number.isNaN(questions) || questions < 0) {
   questions = prompt("Please enter a positive number:");
-} while (Number.isNaN(Number(questions)) || Number(questions) < 0);
-
-alert("For testing purposes questions is " + questions + "!");
+} 
 }
 /* askQuestions calls askQuestion() questions times (for loop), sending the question number as an argument. 
  * It counts the number right returned, and returns number right to main() for feedback.
@@ -79,8 +84,8 @@ function askQuestions(questions) {
  * @return: {integer} correct (0 or 1) or {boolean} correct
 */
 function askQuestion(question){
-    let a = Math.floor(Math.random()*7+3);
-    let b = Math.floor(Math.random()*7+3);
+    let a = Math.floor(Math.random() * (high - low + 1)) + low; 
+    let b = Math.floor(Math.random() * (high - low + 1)) + low;
     let product = a * b;
     let equation = "Question " + question + ": " + a + " * " + b + " = ?";
     let answer = prompt(equation);
@@ -89,6 +94,7 @@ function askQuestion(question){
             return true;
         }
         else{
+            errors.push(a, b)
             alert("Sorry, but that's incorrect.")
             return false;
         }
@@ -102,15 +108,27 @@ function askQuestion(question){
  */
 
 function showTables() {
-    let factor = prompt("Which factor would you like to see a table for?");
-    let table = "Times table for " + factor + "\n";
-        for(let i = low; i <= high; i++){
-            table += i + " * " + factor + " = " + factor*i + "\n";
-        }
-        alert(table);
-    let another = confirm("another table?");
-    if(another) showTables();
-}
+
+    alert(errors.toString())
+
+//     alert("Let's review factors you got wrong.");
+//     for(let i = 0; i = errors.length; i++){
+//         let table = "Times table for " + errors[i] + "\n";
+//         for(let i = low; i <= high; i++){
+//             table += i + " * " +  + " = " + errors[i]*i + "\n";
+//         }
+//         alert(table);
+//     }
+//     let another = confirm("Would you like to review on your  own now?");
+//     let factor = prompt("Which factor would you like to see a table for?");
+//     table = "Times table for " + factor + "\n";
+//         for(let i = low; i <= high; i++){
+//             table += i + " * " + factor + " = " + factor*i + "\n";
+//         }
+//         alert(table);
+//     another = confirm("another table?");
+//     if(another) showTables();
+// }
 
 /* to-do later
 * specify how many questions the student wants and what those should be, this should be done through assigning an existing GLOBAL variable
