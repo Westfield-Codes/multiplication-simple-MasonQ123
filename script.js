@@ -9,6 +9,7 @@ var questions = 5;
 var low = 3;
 var high = 9;
 var errors = [];
+var errorCount = [];
 
 /* main controls the program. 
  * Store the number of questions to ask in a variable called questions.
@@ -21,7 +22,7 @@ var errors = [];
 
 
 function main(){
-
+// errors = [];
 let wizard = confirm("Would you like to use the setup wizard?")
     if (wizard) setUp();
     let right = askQuestions(questions);
@@ -29,9 +30,11 @@ let wizard = confirm("Would you like to use the setup wizard?")
 
         else {
             alert("You got " + right + " out of " + questions + ".")
+            countErrors();
+            alert("These are your errors: " + errors.toString()); 
             let tables = confirm("would you like to study with a table?");
             if(tables) showTables();
-}       
+}
 }
 
 /* setUp lets the student customize the multiplication game
@@ -62,6 +65,7 @@ questions = parseInt(strQ);
   questions = prompt("Please enter a positive number:");
 } 
 }
+
 /* askQuestions calls askQuestion() questions times (for loop), sending the question number as an argument. 
  * It counts the number right returned, and returns number right to main() for feedback.
  * @param: {integer} questions 
@@ -108,29 +112,40 @@ function askQuestion(question){
  */
 
 function showTables() {
+    let another = confirm("Would you like to review on your  own now?");
+    let factor = prompt("Which factor would you like to see a table for?");
+    table = "Times table for " + factor + "\n";
+        for(let i = low; i <= high; i++){
+            table += i + " * " + factor + " = " + factor*i + "\n";
+        }
+        alert(table);
+    another = confirm("another table?");
+    if(another) showTables();
+}
 
-    alert(errors.toString())
 
-//     alert("Let's review factors you got wrong.");
-//     for(let i = 0; i = errors.length; i++){
-//         let table = "Times table for " + errors[i] + "\n";
-//         for(let i = low; i <= high; i++){
-//             table += i + " * " +  + " = " + errors[i]*i + "\n";
-//         }
-//         alert(table);
-//     }
-//     let another = confirm("Would you like to review on your  own now?");
-//     let factor = prompt("Which factor would you like to see a table for?");
-//     table = "Times table for " + factor + "\n";
-//         for(let i = low; i <= high; i++){
-//             table += i + " * " + factor + " = " + factor*i + "\n";
-//         }
-//         alert(table);
-//     another = confirm("another table?");
-//     if(another) showTables();
-// }
+function countErrors(){
+    for(f=0; f < errors.length; f++){
 
+    if (errorCount[errors[f]] === undefined) {
+    errorCount[errors[f]] = 0;
+  }
+       errorCount[errors[f]]++;
+    }
+    alert("TESTING: " + errorCount.toString());
+}
 /* to-do later
 * specify how many questions the student wants and what those should be, this should be done through assigning an existing GLOBAL variable
 * setting where they can keep guessing until they've gotten the correct answer
 */
+
+
+
+    // alert("Let's review factors you got wrong.");
+    // for(let i = 0; i = errors.length; i++){
+    //     let table = "Times table for " + errors[i] + "\n";
+    //     for(let i = low; i <= high; i++){
+    //         table += i + " * " +  + " = " + errors[i]*i + "\n";
+    //     }
+    //     alert(table);
+    // }
