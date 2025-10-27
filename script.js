@@ -1,50 +1,43 @@
-/* MULTIPLICATION SIMPLE
- * This program should ask multiplication questions, displaying which question
- * is being asked, and counting the number of equations with at least one error.
- * FLOWCHART: https://lucid.app/lucidchart/5a3164fd-459f-494d-9cae-b4a6be593b13/view
+/* MULTIPLICATION TABLES
+ * FLOWCHART:https://lucid.app/lucidchart/3e0bd150-cafd-4a4b-a703-a1919eafbd7a/edit?page=GeKRoDTH-sii#
  */
 
-/* Global Variables */
-var questions = 5;
+
+/* Global Variables 
+ * Set default values for low and high factors
+ * Initialize mistakes array
+ */
 var low = 3;
 var high = 9;
-var errors = [];
-var errorCount = [];
-
-/* main controls the program. 
- * Store the number of questions to ask in a variable called questions.
- * Call askQuestions, sending questions as an argument, which returns the number right. 
- * Give feedback depending on the number right returned: Either "Perfect!" or say 
- * how many right out of the number asked (questions). 
- * @param none
- * @return none
+errors = [];
+/* Function main() THIS REPLACES askQuestions(
+ * Calls setup to change default values
+ * Calls askQuestion with question number argument
+ * Keeps score based on returned values from askQuestion
+ * Calls showStats, which calls showTable 
+ * @param: none
+ * @return: none
  */
-
-
-function main(){
-// errors = [];
-let wizard = confirm("Would you like to use the setup wizard?")
+function main() {
+   let wizard = confirm("Would you like to use the setup wizard?")
     if (wizard) setUp();
-    let right = askQuestions(questions);
-        if (right == questions) alert("Perfect!");
 
-        else {
-            alert("You got " + right + " out of " + questions + ".")
-            countErrors();
-            alert("These are your errors: " + errors.toString()); 
+ let right = askQuestions(questions);
             let tables = confirm("would you like to study with a table?");
-            if(tables) showTables();
-}
+            if(tables) showTable(factor);
+            let feedback = confirm("Would you like to see your stats?");
+            if (feedback == true) showStats;
+            return right;
 }
 
-/* setUp lets the student customize the multiplication game
-* specify the range of factors and let the student decide what they should be
-* specify how many questions the student wants and what those should be, this should be done through assigning an existing GLOBAL variable
-* @param none
-* @return none
-*/
-function setUp() {
-   let first = parseInt(prompt("What's the minimum factor you'd like to use"));
+/* Function setUp()
+ * Asks if user wants to keep defaults for low, high, questions. 
+ * If not default, calls changeVar to prompt user to provide new values
+ * @param: none
+ * @return: {integer} questions
+ */
+function setUp(){
+let first = parseInt(prompt("What's the minimum factor you'd like to use"));
     let second = parseInt(prompt("What's the maximum factor you'd like to use?"));
 
     // Check for valid number input AND correct range
@@ -56,7 +49,7 @@ function setUp() {
         // Only update globals when input is valid
         low = first;
         high = second;
-    }
+    }    
 
 let strQ = prompt("How many questions do you want to answer?");
 questions = parseInt(strQ);
@@ -66,10 +59,11 @@ questions = parseInt(strQ);
 } 
 }
 
-/* askQuestions calls askQuestion() questions times (for loop), sending the question number as an argument. 
- * It counts the number right returned, and returns number right to main() for feedback.
- * @param: {integer} questions 
- * @return: {integer} right (0-questions)
+/* Function askQuestion(question) 
+ * Asks a multiplication question: 2 factors between low and high ranges
+ * Provides feedback (correct?), returns true if correct, false if not * Adds missed factors to mistakes array.
+ * @param: {integer} question 
+ * @return: boolean value 
  */
 function askQuestions(questions) {
     let right = 0;
@@ -79,73 +73,44 @@ function askQuestions(questions) {
     return right;
 }
 
-
-
-
-/* askQuestion asks a multiplication question, using the question parameter to say which
- * question is being asked.  It returns 1 if correct, 0 if incorrect.
- * @param: {integer} question (1 - questions)
- * @return: {integer} correct (0 or 1) or {boolean} correct
-*/
-function askQuestion(question){
-    let a = Math.floor(Math.random() * (high - low + 1)) + low; 
-    let b = Math.floor(Math.random() * (high - low + 1)) + low;
-    let product = a * b;
-    let equation = "Question " + question + ": " + a + " * " + b + " = ?";
-    let answer = prompt(equation);
-        if (answer == product){ 
-            alert("Correct!")
-            return true;
-        }
-        else{
-            errors.push(a, b)
-            alert("Sorry, but that's incorrect.")
-            return false;
-        }
-}
-
-/* Function showTable()
- * Display a multiplication table for a factor
- * Builds table line by line with a loop, then shows table * One line for each factor value. low to high 
- * @param: none
+/* Function showStats()
+ * Provides feedback on total correct out of total asked. 
+ * If perfect score, displays "Perfection Badge"
+ * If not perfect, displays how many right out of questions
+ * Calls showErrors to display which factors led to errors to inform study.
+ * While user wants to study tables, calls showTable for a factor.
+ * Prompt changes from "any tables" to "more tables" 
+ * @param: score, questions
  * @return: none
  */
-
-function showTables() {
-    let another = confirm("Would you like to review on your  own now?");
-    let factor = prompt("Which factor would you like to see a table for?");
-    table = "Times table for " + factor + "\n";
-        for(let i = low; i <= high; i++){
-            table += i + " * " + factor + " = " + factor*i + "\n";
-        }
-        alert(table);
-    another = confirm("another table?");
-    if(another) showTables();
+showStats(score, questions){
+ 
+if (right == questions){
+    alert("You've earned the Perfection Badge, congrats!");
 }
-
-
-function countErrors(){
-    for(f=0; f < errors.length; f++){
-
-    if (errorCount[errors[f]] === undefined) {
-    errorCount[errors[f]] = 0;
-  }
-       errorCount[errors[f]]++;
-    }
-    alert("TESTING: " + errorCount.toString());
+else{
+    alert("You got " + right + " out of " + questions + ".");
+    showErrors();
 }
-/* to-do later
-* specify how many questions the student wants and what those should be, this should be done through assigning an existing GLOBAL variable
-* setting where they can keep guessing until they've gotten the correct answer
-*/
+let study = confirm("Would you like to study using tables?");
+
+while(study == true){
+showTable();
+study = confirm("Would you like to study more tables?");
+}
+}
+/* Function showErrors(errors)
+ * Provides feedback on errors by showing pairs of factors.
+ * statsAnalysis() shows most frequent factor in errors.  
+ * @param: errors
+ * @return: none
+ */
+showErrors(errors);
 
 
-
-    // alert("Let's review factors you got wrong.");
-    // for(let i = 0; i = errors.length; i++){
-    //     let table = "Times table for " + errors[i] + "\n";
-    //     for(let i = low; i <= high; i++){
-    //         table += i + " * " +  + " = " + errors[i]*i + "\n";
-    //     }
-    //     alert(table);
-    // }
+/* Function showTable(factor)
+ * Display the table for the factor passed as a parameter
+ * Builds table line by line with a loop, then shows table * One line for each factor value. low to high 
+ * @param: factor
+ * @return: none
+ */
