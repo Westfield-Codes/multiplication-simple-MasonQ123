@@ -1,6 +1,6 @@
-let low = 3;
-let high = 9;
-let mistakes = [];
+var low = 3;
+var high = 9;
+var mistakes = [];
 
 
 
@@ -18,6 +18,7 @@ function main() {
 
   showStats(score, questions);
 }
+
 
 
 // Function setUp()
@@ -77,14 +78,43 @@ function askQuestion(question) {
 
 
 // Function showStats()
+function showStats(score, questions) {
+  if (score === questions) {
+    alert("Perfect score! You earned the Perfection Badge!");
+  } else {
+    alert("You got " + score + " out of " + questions + " correct.");
+    if (mistakes.length > 0) {
+      showErrors(mistakes);
+    }
+  }
+let more = prompt("Would you like to study any tables? (yes/no)");
+  while (more.toLowerCase() === "yes") {
+    let factor = parseInt(prompt("Enter the factor you'd like to study:"));
+    showTable(factor);
+    more = prompt("Would you like to study more tables? (yes/no)");
+  }
+alert("Thanks for playing!");
+}
 
 
-
+// Function showErrors(errors)
+function showErrors(errors) {
+  let message = "You missed these problems:\n";
+  for (let i = 0; i < errors.length; i++) {
+    message += errors[i][0] + " x " + errors[i][1] + " = " + (errors[i][0] * errors[i][1]) + "\n";
+  }
+  alert(message);
+}
 
 
 // Function showTable(factor)
+function showTable(factor) {
+  let table = "Multiplication Table for " + factor + ":\n";
+  for (let i = low; i <= high; i++) {
+    table += factor + " x " + i + " = " + (factor * i) + "\n";
+  }
+  alert(table);
+}
 
 
-
-// Start program
 
