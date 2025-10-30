@@ -95,8 +95,8 @@ function showStats(score, questions) {
       showErrors(mistakes);
     }
   }
-let more = prompt("Would you like to study any tables? (yes/no)");
-  while (more.toLowerCase() === "yes") {
+let more = confirm("Would you like to study any tables? (yes/no)");
+  while (more == true) {
     if(perfect != true){
 let factor = parseInt(prompt("Enter the factor you'd like to study... NOTE: " + message));
     showTable(factor);
@@ -105,7 +105,7 @@ let factor = parseInt(prompt("Enter the factor you'd like to study... NOTE: " + 
       let factor = parseInt(prompt("Enter the factor you'd like to study:"));
     showTable(factor);
   }
-      more = prompt("Would you like to study more tables? (yes/no)");
+      more = confirm("Would you like to study more tables? (yes/no)");
 }
 alert("Thanks for playing!");
 }
