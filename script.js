@@ -1,8 +1,8 @@
 var low = 3;
 var high = 9;
 var mistakes = [];
-
-
+var message = "";
+var perfect = false;
 
 // Main function
 function main() {
@@ -76,10 +76,18 @@ function askQuestion(question) {
   }
 }
 
+// Function showErrors(errors)
+function showErrors(errors) {
+  message = "you missed these problems:\n";
+  for (let i = 0; i < errors.length; i++) {
+    message += errors[i][0] + " x " + errors[i][1] + " = " + (errors[i][0] * errors[i][1]) + "\n";
+  }
+}
 
 // Function showStats()
 function showStats(score, questions) {
   if (score === questions) {
+    perfect = true;
     alert("Perfect score! You earned the Perfection Badge!");
   } else {
     alert("You got " + score + " out of " + questions + " correct.");
@@ -89,22 +97,20 @@ function showStats(score, questions) {
   }
 let more = prompt("Would you like to study any tables? (yes/no)");
   while (more.toLowerCase() === "yes") {
-    let factor = parseInt(prompt("Enter the factor you'd like to study:"));
+    if(perfect != true){
+let factor = parseInt(prompt("Enter the factor you'd like to study... NOTE: " + message));
     showTable(factor);
-    more = prompt("Would you like to study more tables? (yes/no)");
+    }
+    else{
+      let factor = parseInt(prompt("Enter the factor you'd like to study:"));
+    showTable(factor);
   }
+      more = prompt("Would you like to study more tables? (yes/no)");
+}
 alert("Thanks for playing!");
 }
 
 
-// Function showErrors(errors)
-function showErrors(errors) {
-  let message = "You missed these problems:\n";
-  for (let i = 0; i < errors.length; i++) {
-    message += errors[i][0] + " x " + errors[i][1] + " = " + (errors[i][0] * errors[i][1]) + "\n";
-  }
-  alert(message);
-}
 
 
 // Function showTable(factor)
