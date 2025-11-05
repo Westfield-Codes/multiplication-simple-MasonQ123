@@ -1,126 +1,41 @@
-var low = 3;
-var high = 9;
-var mistakes = [];
-var message = "";
-var perfect = false;
-
-// Main function
+var mistakes = [5,8,6,8,6,9,4,9,7,8,6,4];
 function main() {
-  let questions = setUp();
-  let score = 0;
-
-
-  for (let i = 1; i <= questions; i++) {
-    let correct = askQuestion(i);
-    if (correct) score++;
-  }
-
-
-  showStats(score, questions);
+    showStats(4, 10);
 }
-
-
-
-// Function setUp()
-function setUp() {
-  let keepDefaults = confirm(
-    "Would you like to keep the default min and max ranges of " + low + " to " + high + "?"
-  );
-
-
-  if (keepDefaults !== true) {
-    low = changeVar("minimum value");
-    high = changeVar("maximum value");
-  }
-
-
-  let defaultQuestions = 5;
-  let keepQuestions = confirm(
-    "Would you like to keep the default number of questions (" + defaultQuestions + ")?"
-  );
-
-
-  if (keepQuestions !== true) {
-    defaultQuestions = changeVar("number of questions");
-  }
-
-
-  return defaultQuestions;
-}
-
-
-// Function changeVar(variable)
-function changeVar(variable) {
-  let value = parseInt(prompt("Enter the new " + variable + ":"));
-  while (isNaN(value) || value <= 0) {
-    value = parseInt(prompt("Invalid input. Enter the new " + variable + " again:"));
-  }
-  return value;
-}
-
-
-// Function askQuestion(question)
-function askQuestion(question) {
-  let num1 = Math.floor(Math.random() * (high - low + 1)) + low;
-  let num2 = Math.floor(Math.random() * (high - low + 1)) + low;
-  let answer = parseInt(prompt("Question " + question + ": What is " + num1 + " x " + num2 + "?"));
-
-
-  if (answer === num1 * num2) {
-    alert("Correct!");
-    return true;
-  } else {
-    alert("Incorrect. The correct answer was " + (num1 * num2));
-    mistakes.push([num1, num2]);
-    return false;
-  }
-}
-
-// Function showErrors(errors)
-function showErrors(errors) {
-  message = "you missed these problems:\n";
-  for (let i = 0; i < errors.length; i++) {
-    message += errors[i][0] + " x " + errors[i][1] + " = " + (errors[i][0] * errors[i][1]) + "\n";
-  }
-}
-
-// Function showStats()
 function showStats(score, questions) {
-  if (score === questions) {
-    perfect = true;
-    alert("Perfect score! You earned the Perfection Badge!");
-  } else {
-    alert("You got " + score + " out of " + questions + " correct.");
-    if (mistakes.length > 0) {
-      showErrors(mistakes);
-    }
-  }
-let more = confirm("Would you like to study any tables? (yes/no)");
-  while (more == true) {
-    if(perfect != true){
-let factor = parseInt(prompt("Enter the factor you'd like to study... NOTE: " + message));
+let tables = true;
+let more = "any";
+if(score == questions){
+  alert("Perfect!");
+}
+else{
+  alert("You got " + score + " out of " + questions + " right.");
+  let errors = questions - score;
+  alert(showErrors(errors));
+}
+while(tables == true){
+  tables = confirm("Would you like to study " + more + " tables?")
+  if(tables == true){
+     let factor = parseInt(prompt("Show table for which factor?"))
     showTable(factor);
-    }
-    else{
-      let factor = parseInt(prompt("Enter the factor you'd like to study:"));
-    showTable(factor);
+    more = "more";
   }
-      more = confirm("Would you like to study more tables? (yes/no)");
 }
-alert("Thanks for playing!");
 }
 
-
-
-
-// Function showTable(factor)
-function showTable(factor) {
-  let table = "Multiplication Table for " + factor + ":\n";
-  for (let i = low; i <= high; i++) {
-    table += factor + " x " + i + " = " + (factor * i) + "\n";
+function showErrors(errors) {
+   let feedback = "Here were your errors: " + "\n";
+  for(let error = 0; error < mistakes.length; error += 2){
+    feedback += mistakes[error] + " x " + mistakes[error+1] + "\n";
   }
-  alert(table);
+  feedback += "The highest factor with the most errors was " + statsAnalysis() + ". Study tables for it!"
+return feedback;
 }
 
+function statsAnalysis() {
 
+}
 
+function showTable(factor){
+alert(factor);
+}
